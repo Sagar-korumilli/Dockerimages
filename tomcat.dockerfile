@@ -148,3 +148,5 @@ RUN set -eux; \
 
 EXPOSE 8080
 CMD ["catalina.sh", "run"]
+
+COPY index.html /webapps.dist/ROOT/WEB-INF/web.xml
