@@ -1,18 +1,13 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
+RUN apt-get update && apt-get install -y apache2 && apt-get clean && rm -rf /var/lib/apt/lists/
 
-RUN mkdir /opt/tomcat/
+ENV APACHE_RUN_USER www-data
+ENV APACHE_RUN_GROUP www-data
+ENV APACHE_LOG_DIR /var/log/apache2
+ENV APACHE_RUN_DIR /var/www/html/
 
-WORKDIR /opt/tomcat
-RUN curl -O https://www-eu.apache.org/dist/tomcat/tomcat-8/v8.5.40/bin/apache-tomcat-8.5.40.tar.gz
-RUN tar xvfz apache*.tar.gz
-RUN mv apache-tomcat-8.5.40/* /opt/tomcat/.
-RUN yum -y install java
-RUN java -version
+EXPOSE 80
 
-WORKDIR /opt/tomcat/webapps
+CMD ["/usr/sbin/apache2", "-D" , "FOREGROUND"]
 
-COPY index.html SampleWebapp/index.html
-
-EXPOSE 8080
-
-CMD ["/opt/tomcat/bin/catalina.sh", "run"]
+COPY index.html \var\www\html\
